@@ -340,7 +340,7 @@ flowchart LR
 - `npm run test` passes for user service tests
 - Acceptance: user service provides create, read, update, and delete operations
 
-### Phase 3: API Routes - PLANNED
+### Phase 3: API Routes - COMPLETED
 
 **Objective**: Implement register, login, and logout endpoints with Zod validation.
 
@@ -571,18 +571,18 @@ const registerSchema = z.object({
 - [x] Each phase's unit tests pass (`npm run test` green before moving to the next phase)
 - [ ] Tests cover happy paths and failure paths (validation, duplicates, invalid credentials)
 - [ ] A teacher can register with first name, last name, username, email, and password
-- [ ] Registration rejects duplicate usernames with a clear error
-- [ ] Registration rejects duplicate emails with a clear error
+- [x] Registration rejects duplicate usernames with a clear error
+- [x] Registration rejects duplicate emails with a clear error
 - [ ] Passwords are hashed client-side before HTTP POST on register and login
 - [ ] Only hashed passwords are stored in the database; plaintext is never persisted
 - [ ] A teacher can log in with username or email plus password
-- [ ] Login rejects invalid credentials with a generic error message
+- [x] Login rejects invalid credentials with a generic error message
 - [ ] Successful registration redirects to `/mcqs`
 - [ ] Successful login redirects to `/mcqs`
 - [ ] MCQ stub page displays placeholder content for Sprint 2
 - [ ] Logout clears client-side state and redirects to `/login`
 - [x] User service provides create, read, update, and delete operations
-- [ ] All API endpoints validate input with Zod
+- [x] All API endpoints validate input with Zod
 - [ ] `npm run lint`, `npm run build`, and `npm run test` pass
 
 ---
@@ -680,6 +680,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: Aug 26, 2026
-**Current Phase**: Phase 3 - API Routes
-**Status**: PLANNED (Phase 2 complete — awaiting review)
-**Next Steps**: Review Phase 2, then begin Phase 3 route tests (RED)
+**Current Phase**: Phase 4 - UI Pages and Client Hashing
+**Status**: PLANNED (Phase 3 complete — awaiting review)
+**Next Steps**: Review Phase 3, then begin Phase 4 UI/hash tests (RED)
