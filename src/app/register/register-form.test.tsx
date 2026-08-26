@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { SignupForm } from "@/components/signup-form";
+import { RegisterForm } from "@/components/register-form";
 
 const push = vi.fn();
 
@@ -13,7 +13,7 @@ vi.mock("@/lib/auth/hash-password", () => ({
 	hashPassword: vi.fn(async (password: string) => `hashed-${password}`),
 }));
 
-describe("SignupForm", () => {
+describe("RegisterForm", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.stubGlobal(
@@ -37,7 +37,7 @@ describe("SignupForm", () => {
 	});
 
 	it("renders register fields", () => {
-		render(<SignupForm />);
+		render(<RegisterForm />);
 
 		expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe("SignupForm", () => {
 
 	it("submits hashed password to register API", async () => {
 		const user = userEvent.setup();
-		render(<SignupForm />);
+		render(<RegisterForm />);
 
 		await user.type(screen.getByLabelText(/first name/i), "Jane");
 		await user.type(screen.getByLabelText(/last name/i), "Smith");
@@ -78,7 +78,7 @@ describe("SignupForm", () => {
 
 	it("shows validation error when passwords do not match", async () => {
 		const user = userEvent.setup();
-		render(<SignupForm />);
+		render(<RegisterForm />);
 
 		await user.type(screen.getByLabelText(/first name/i), "Jane");
 		await user.type(screen.getByLabelText(/last name/i), "Smith");
@@ -106,7 +106,7 @@ describe("SignupForm", () => {
 		);
 
 		const user = userEvent.setup();
-		render(<SignupForm />);
+		render(<RegisterForm />);
 
 		await user.type(screen.getByLabelText(/first name/i), "Jane");
 		await user.type(screen.getByLabelText(/last name/i), "Smith");

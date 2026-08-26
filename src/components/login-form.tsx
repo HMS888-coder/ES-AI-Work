@@ -104,7 +104,7 @@ export function LoginForm({
 								<FieldDescription className="text-center">
 									Don&apos;t have an account?{" "}
 									<Link href="/register" className="underline-offset-4 hover:underline">
-										Sign up
+										Register
 									</Link>
 								</FieldDescription>
 							</Field>
