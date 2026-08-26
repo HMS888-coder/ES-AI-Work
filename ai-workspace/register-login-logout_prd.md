@@ -302,7 +302,7 @@ flowchart LR
 - Migration applied locally
 - D1 binding configured in `wrangler.jsonc`
 
-### Phase 2: User Service - PLANNED
+### Phase 2: User Service - COMPLETED
 
 **Objective**: Implement the user service with CRUD operations and password comparison.
 
@@ -568,7 +568,7 @@ const registerSchema = z.object({
 ## Acceptance Criteria
 
 - [x] Vitest harness configured (`vitest.config.ts`, `npm run test` works)
-- [ ] Each phase's unit tests pass (`npm run test` green before moving to the next phase)
+- [x] Each phase's unit tests pass (`npm run test` green before moving to the next phase)
 - [ ] Tests cover happy paths and failure paths (validation, duplicates, invalid credentials)
 - [ ] A teacher can register with first name, last name, username, email, and password
 - [ ] Registration rejects duplicate usernames with a clear error
@@ -581,7 +581,7 @@ const registerSchema = z.object({
 - [ ] Successful login redirects to `/mcqs`
 - [ ] MCQ stub page displays placeholder content for Sprint 2
 - [ ] Logout clears client-side state and redirects to `/login`
-- [ ] User service provides create, read, update, and delete operations
+- [x] User service provides create, read, update, and delete operations
 - [ ] All API endpoints validate input with Zod
 - [ ] `npm run lint`, `npm run build`, and `npm run test` pass
 
@@ -679,7 +679,7 @@ When working with this PRD:
 
 ## Current Status
 
-**Last Updated**: Aug 25, 2026
-**Current Phase**: Phase 2 - User Service
-**Status**: PLANNED (Phase 1 complete — awaiting review)
-**Next Steps**: Review Phase 1, then begin Phase 2 user service tests (RED)
+**Last Updated**: Aug 26, 2026
+**Current Phase**: Phase 3 - API Routes
+**Status**: PLANNED (Phase 2 complete — awaiting review)
+**Next Steps**: Review Phase 2, then begin Phase 3 route tests (RED)
