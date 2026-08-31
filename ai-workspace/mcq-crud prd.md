@@ -23,7 +23,7 @@ Date last modified: Aug 31, 2026 (Phase 3 API routes implementation record)
 | 0 | `6f55b34` | Add Phase 0 MCQ CRUD technical PRD with Phase 1 implementation record. |
 | 1 | `46e18af` | Add Phase 1 MCQ D1 migration and schema tests. |
 | 2 | `36c3f5a` | Add Phase 2 MCQ service with TDD unit tests. |
-| 3 | `bbaada3` | Add Phase 3 MCQ API handlers, Zod schemas, and route wrappers. |
+| 3 | `4328364` | Add Phase 3 MCQ API handlers, Zod schemas, and route wrappers. |
 
 ---
 
@@ -436,7 +436,7 @@ Each phase follows **Red → Green → Refactor**:
 - **Handlers**: `src/lib/services/mcq-handlers.ts` — serialize DB rows to camelCase API responses
 - **Route delegation**: thin wrappers via `getCloudflareContext()` → `env.DB` → handlers
 - **Tests**: `src/lib/services/mcq-handlers.test.ts` — **19 tests**
-- **Git commit**: `bbaada3`
+- **Git commit**: `4328364`
 
 **Phase exit criteria**:
 
@@ -617,4 +617,4 @@ When working with this PRD:
 
 **Next Steps**: Add shadcn components; TDD MCQ list, form, and preview UI
 
-**Branch**: `feature/mcq-crud` @ `bbaada3`
+**Branch**: `feature/mcq-crud` @ `4328364`
