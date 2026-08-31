@@ -14,7 +14,7 @@ Date last modified: Aug 31, 2026 (Phase 5 verification complete)
 | Phase 3 (API routes) | **COMPLETED and verified** |
 | Phase 4 (UI pages and components) | **COMPLETED and verified** |
 | Phase 5 (Verification) | **COMPLETED and verified** |
-| Branch | `feature/mcq-crud` @ `5062c13` |
+| Branch | `feature/mcq-crud` @ `74cd462` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
 | Test suite | 16 files, **100 tests** — all passing (Aug 31, 2026) |
 
@@ -30,6 +30,7 @@ Date last modified: Aug 31, 2026 (Phase 5 verification complete)
 | 4 (enhancements) | `7264655` | Add Phase 4 post-sanity-test MCQ UI enhancements. |
 | 4 (UX polish) | `ebbf672` | Add Phase 4 UX polish: Submit label, empty warning, tooltips, delete copy. |
 | 4 (batch 3–4) | `8afd837` | Add Phase 4 batch 3–4 MCQ UX refinements after local verification. |
+| 5 | `74cd462` | Complete Phase 5 MCQ CRUD verification and update PRD. |
 
 ---
 
@@ -558,7 +559,7 @@ Each phase follows **Red → Green → Refactor**:
 - After MCQ update, choice IDs are replaced; preview attempts must use refreshed choice IDs from GET (documented under Technical Risks)
 - User confirmed Phase 4 batches 3–4 UI behavior locally before deploy
 
-- **Git commit**: *(pending — PRD update in progress)*
+- **Git commit**: `74cd462`
 
 ---
 
@@ -708,4 +709,4 @@ When working with this PRD:
 
 **Next Steps**: Feature complete on `feature/mcq-crud`; merge PR when ready
 
-**Branch**: `feature/mcq-crud` @ `5062c13`
+**Branch**: `feature/mcq-crud` @ `74cd462`
