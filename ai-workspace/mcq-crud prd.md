@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 4 UX polish deployed to production)
+Date last modified: Aug 31, 2026 (Phase 4 batches 3–4 — verified and deploying)
 
 # MCQ CRUD - Technical PRD
 
@@ -14,9 +14,9 @@ Date last modified: Aug 31, 2026 (Phase 4 UX polish deployed to production)
 | Phase 3 (API routes) | **COMPLETED and verified** |
 | Phase 4 (UI pages and components) | **COMPLETED and verified** |
 | Phase 5 (Verification) | **PLANNED** |
-| Branch | `feature/mcq-crud` @ `a615f0a` |
+| Branch | `feature/mcq-crud` @ `8afd837` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
-| Test suite | 15 files, **97 tests** — all passing (Aug 31, 2026) |
+| Test suite | 16 files, **100 tests** — all passing (Aug 31, 2026) |
 
 **Git commits (traceability):**
 
@@ -29,6 +29,7 @@ Date last modified: Aug 31, 2026 (Phase 4 UX polish deployed to production)
 | 4 | `363ef51` | Add Phase 4 MCQ UI pages, components, and component tests. |
 | 4 (enhancements) | `7264655` | Add Phase 4 post-sanity-test MCQ UI enhancements. |
 | 4 (UX polish) | `ebbf672` | Add Phase 4 UX polish: Submit label, empty warning, tooltips, delete copy. |
+| 4 (batch 3–4) | `8afd837` | Add Phase 4 batch 3–4 MCQ UX refinements after local verification. |
 
 ---
 
@@ -291,8 +292,10 @@ Use shadcn/ui components: `table`, `button`, `field`, `input`, `textarea`, `drop
 #### Preview Page (`/mcqs/[id]/preview`)
 
 - Display MCQ question text and choices as radio buttons
-- Submit: POST `/api/mcqs/[id]/attempts` with `{ mcqChoiceId, userId }`
-- Show correct/incorrect feedback after submission; correct choice in green, wrong selection in red
+- Submit: POST `/api/mcqs/[id]/attempts` with `{ mcqChoiceId, userId }` — **each Submit inserts a new row** in `mcq_attempts` (no one-attempt-per-user limit)
+- Show **Correct!** / **Incorrect!** feedback in green/red after submission (not on choice rows)
+- Choices stay selectable after feedback; changing selection clears feedback so the user can Submit again
+- Submit disables only while the attempt POST is in flight
 
 ---
 
@@ -498,8 +501,8 @@ Each phase follows **Red → Green → Refactor**:
 | # | Enhancement | File |
 |---|-------------|------|
 | 1 | Preview page keeps header **Back to list**; form footer button renamed to **Cancel** (navigates to `/mcqs`) | `src/components/mcq-preview.tsx` |
-| 2 | After attempt submit: correct choice highlighted **green**, wrong selection **red**; inputs locked | `src/components/mcq-preview.tsx` |
-| 3 | Duplicate choice text/id validation on create and edit with inline row errors | `src/components/mcq-form.tsx` |
+| 2 | After attempt submit: **Correct!** / **Incorrect!** feedback text in green/red (choices remain selectable for retry) | `src/components/mcq-preview.tsx` |
+| 3 | Duplicate choice text/id validation on Save with red invalid inputs (not while typing) | `src/components/mcq-form.tsx` |
 
 - **Tests added**: `mcq-preview.test.tsx` (correct + incorrect color cases), `mcq-form.test.tsx` (duplicate text) — **95/95** suite passing
 - **Git commit**: `7264655`
@@ -514,6 +517,26 @@ Each phase follows **Red → Green → Refactor**:
 | 7 | Delete dialog: **"This action cannot be undone"** + cascade warning | `src/components/delete-mcq-dialog.tsx` |
 
 - **Git commit**: `ebbf672`
+
+**Post-sanity-test bugfixes (batch 3)** — still Phase 4:
+
+| # | Fix | File |
+|---|-----|------|
+| 8 | Duplicate inline errors show **on Save only** (clears when user edits choice) | `src/components/mcq-form.tsx` |
+| 9 | Preview feedback: **Correct!** in green, **Incorrect!** in red — not choice row styling | `src/components/mcq-preview.tsx` |
+
+- **Git commit**: `8afd837`
+
+**Post-sanity-test refinements (batch 4)** — still Phase 4:
+
+| # | Refinement | File |
+|---|------------|------|
+| 10 | Preview **Submit** stays enabled after first attempt (only disabled while posting) | `src/components/mcq-preview.tsx` |
+| 11 | Empty list: single **Create MCQ** — header button hidden when empty; empty-state warning keeps CTA | `src/components/mcqs-page-content.tsx`, `src/components/mcq-list-table.tsx`, `src/app/mcqs/page.tsx` |
+| 12 | Duplicate choices: red invalid inputs only; form-level **Duplicate choice text is not allowed** (no per-row inline message) | `src/components/mcq-form.tsx` |
+| 13 | Preview choices re-selectable after submit; feedback clears when a new choice is selected | `src/components/mcq-preview.tsx` |
+
+- **Git commit**: `8afd837`
 
 ---
 
@@ -580,7 +603,7 @@ flowchart LR
 - [x] Create and edit forms have Save and Cancel; persist changes via API
 - [x] Preview records attempt with `mcq_choice_id`, `user_id`, and `is_correct`
 - [x] Delete removes MCQ with confirmation dialog (cascades choices/attempts)
-- [x] `npm run test`, `npm run lint`, and `npm run build` pass (93/93 tests, Aug 31, 2026)
+- [x] `npm run test`, `npm run lint`, and `npm run build` pass (100/100 tests, Aug 31, 2026)
 
 ---
 
@@ -667,14 +690,10 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: Phase 4 UX polish committed, pushed, and deployed (Aug 31, 2026)
+**Status**: Phase 4 batches 3–4 verified locally — **committing and deploying**
 
 **Production URL**: https://es-ai-work.harish-ms.workers.dev
 
-**Worker version**: `24de08ea-e67d-492e-acef-c3f2d5c905c1`
+**Next Steps**: Phase 5 final sign-off after deploy
 
-**Remote D1**: migration `0002_create_mcqs.sql` applied to `quizmaker-db`
-
-**Next Steps**: Revalidate UX polish in production; Phase 5 final sign-off
-
-**Branch**: `feature/mcq-crud` @ `a615f0a`
+**Branch**: `feature/mcq-crud` @ `8afd837`
