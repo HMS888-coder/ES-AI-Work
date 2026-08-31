@@ -105,6 +105,7 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 	const [choices, setChoices] = useState<ChoiceDraft[]>(DEFAULT_CHOICES);
 	const [correctIndex, setCorrectIndex] = useState(0);
 	const [error, setError] = useState<string | null>(null);
+	const [showChoiceErrors, setShowChoiceErrors] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isLoading, setIsLoading] = useState(mode === "edit");
 
@@ -177,6 +178,7 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 	}
 
 	function updateChoiceText(index: number, text: string) {
+		setShowChoiceErrors(false);
 		setChoices(
 			choices.map((choice, i) => (i === index ? { ...choice, text } : choice)),
 		);
@@ -204,6 +206,7 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		setError(null);
+		setShowChoiceErrors(true);
 
 		const validationError = validateForm();
 		if (validationError) {
@@ -305,7 +308,7 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 										onChange={(event) => updateChoiceText(index, event.target.value)}
 										placeholder={`Choice ${index + 1}`}
 										className="flex-1"
-										aria-invalid={duplicateIndices.has(index)}
+										aria-invalid={showChoiceErrors && duplicateIndices.has(index)}
 									/>
 									<Button
 										type="button"
@@ -317,9 +320,6 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 										Remove
 									</Button>
 								</div>
-								{duplicateIndices.has(index) ? (
-									<FieldError>Duplicate choice</FieldError>
-								) : null}
 							</div>
 						))}
 					</RadioGroup>

@@ -80,7 +80,7 @@ describe("McqForm", () => {
 		expect(fetch).not.toHaveBeenCalled();
 	});
 
-	it("shows duplicate choice errors and blocks submit", async () => {
+	it("shows duplicate choice errors on save and blocks submit", async () => {
 		const user = userEvent.setup();
 		render(<McqForm mode="create" />);
 
@@ -88,10 +88,15 @@ describe("McqForm", () => {
 		await user.type(screen.getByLabelText(/^question$/i), "Which organelle performs photosynthesis?");
 		await user.type(screen.getByLabelText(/^choice 1$/i), "Chloroplast");
 		await user.type(screen.getByLabelText(/^choice 2$/i), "Chloroplast");
+
+		expect(screen.queryByText(/^Duplicate choice$/i)).not.toBeInTheDocument();
+
 		await user.click(screen.getByRole("button", { name: /save/i }));
 
 		expect(await screen.findByText(/duplicate choice text is not allowed/i)).toBeInTheDocument();
-		expect(screen.getAllByText(/^Duplicate choice$/i)).toHaveLength(2);
+		expect(screen.getByLabelText(/^choice 1$/i)).toHaveAttribute("aria-invalid", "true");
+		expect(screen.getByLabelText(/^choice 2$/i)).toHaveAttribute("aria-invalid", "true");
+		expect(screen.queryByText(/^Duplicate choice$/i)).not.toBeInTheDocument();
 		expect(fetch).not.toHaveBeenCalled();
 	});
 });

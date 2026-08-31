@@ -37,6 +37,7 @@ describe("McqListTable", () => {
 	});
 
 	it("shows a warning and create link when no MCQs exist", async () => {
+		const onEmptyChange = vi.fn();
 		vi.stubGlobal(
 			"fetch",
 			vi.fn(async () => ({
@@ -46,7 +47,7 @@ describe("McqListTable", () => {
 			})),
 		);
 
-		render(<McqListTable />);
+		render(<McqListTable onEmptyChange={onEmptyChange} />);
 
 		expect(await screen.findByRole("alert")).toHaveTextContent(
 			/No MCQs in your test bank yet/i,
@@ -55,6 +56,7 @@ describe("McqListTable", () => {
 			"href",
 			"/mcqs/new",
 		);
+		expect(onEmptyChange).toHaveBeenCalledWith(true);
 	});
 
 	it("shows truncated question text with full text in tooltip on hover", async () => {

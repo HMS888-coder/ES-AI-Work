@@ -64,7 +64,11 @@ function QuestionCell({ question }: { question: string }) {
 	);
 }
 
-export function McqListTable() {
+type McqListTableProps = {
+	onEmptyChange?: (isEmpty: boolean) => void;
+};
+
+export function McqListTable({ onEmptyChange }: McqListTableProps) {
 	const [mcqs, setMcqs] = useState<McqListItem[]>([]);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -80,12 +84,15 @@ export function McqListTable() {
 			setMcqs(nextMcqs);
 			setError(nextError);
 			setIsLoading(false);
+			if (!nextError) {
+				onEmptyChange?.(nextMcqs.length === 0);
+			}
 		});
 
 		return () => {
 			cancelled = true;
 		};
-	}, []);
+	}, [onEmptyChange]);
 
 	const refreshMcqs = useCallback(async () => {
 		setIsLoading(true);
@@ -95,7 +102,10 @@ export function McqListTable() {
 		setMcqs(nextMcqs);
 		setError(nextError);
 		setIsLoading(false);
-	}, []);
+		if (!nextError) {
+			onEmptyChange?.(nextMcqs.length === 0);
+		}
+	}, [onEmptyChange]);
 
 	if (isLoading) {
 		return <p className="text-muted-foreground">Loading MCQs...</p>;
