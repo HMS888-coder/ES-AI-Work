@@ -83,10 +83,10 @@ describe("0002_create_mcqs migration", () => {
 	it("creates foreign keys with ON DELETE CASCADE", () => {
 		const sql = getMcqsMigrationSql();
 
-		expect(sql).toMatch(/created_by_user_id.*REFERENCES users\(id\).*ON DELETE CASCADE/is);
-		expect(sql).toMatch(/mcq_id.*REFERENCES mcqs\(id\).*ON DELETE CASCADE/is);
-		expect(sql).toMatch(/mcq_choice_id.*REFERENCES mcq_choices\(id\).*ON DELETE CASCADE/is);
-		expect(sql).toMatch(/user_id.*REFERENCES users\(id\).*ON DELETE CASCADE/is);
+		expect(sql).toMatch(/created_by_user_id.*REFERENCES users\(id\).*ON DELETE CASCADE/i);
+		expect(sql).toMatch(/mcq_id.*REFERENCES mcqs\(id\).*ON DELETE CASCADE/i);
+		expect(sql).toMatch(/mcq_choice_id.*REFERENCES mcq_choices\(id\).*ON DELETE CASCADE/i);
+		expect(sql).toMatch(/user_id.*REFERENCES users\(id\).*ON DELETE CASCADE/i);
 	});
 
 	it("creates required indexes", () => {

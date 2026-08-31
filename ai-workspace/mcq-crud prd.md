@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 3 API routes implementation record)
+Date last modified: Aug 31, 2026 (Phase 4 UI pages and components implementation record)
 
 # MCQ CRUD - Technical PRD
 
@@ -11,10 +11,10 @@ Date last modified: Aug 31, 2026 (Phase 3 API routes implementation record)
 | Phase 0 (PRD) | **COMPLETED** |
 | Phase 1 (D1 migration + schema tests) | **COMPLETED and verified** |
 | Phase 2 (MCQ service) | **COMPLETED and verified** |
-| Phase 3 (API routes) | **COMPLETED and verified** |
-| Phases 4–5 | **PLANNED** |
+| Phase 4 (UI pages and components) | **COMPLETED and verified** |
+| Phase 5 (Verification) | **PLANNED** |
 | Branch | `feature/mcq-crud` |
-| Test suite | 11 files, **87 tests** — all passing (Aug 31, 2026) |
+| Test suite | 15 files, **93 tests** — all passing (Aug 31, 2026) |
 
 **Git commits (traceability):**
 
@@ -448,18 +448,45 @@ Each phase follows **Red → Green → Refactor**:
 
 ---
 
-### Phase 4: UI Pages and Components - PLANNED
+### Phase 4: UI Pages and Components - COMPLETED
 
 **Objective**: Build list, create/edit, and preview pages with shadcn components.
 
 **TDD approach**: Write component tests first (RED). Implement pages and wire to API (GREEN).
 
+**Tests first (RED)** — colocated component tests (6 tests):
+
+| Component | Cases |
+|-----------|-------|
+| `McqListTable` | Renders rows from GET `/api/mcqs` |
+| `McqForm` | Submits create payload with `createdByUserId` from localStorage |
+| `McqPreview` | Submits attempt POST with choice and userId |
+| `DeleteMcqDialog` | Confirms DELETE and calls onDeleted |
+
 **Deliverables**:
 
 - shadcn: `dropdown-menu`, `textarea`, `alert-dialog`, `radio-group`
-- `src/components/mcq-*.tsx`, `delete-mcq-dialog.tsx`
+- `src/lib/mcq/types.ts` — API response types
+- `src/components/mcq-list-table.tsx`, `mcq-row-actions.tsx`, `delete-mcq-dialog.tsx`, `mcq-form.tsx`, `mcq-preview.tsx`
+- Colocated tests: `mcq-list-table.test.tsx`, `mcq-form.test.tsx`, `mcq-preview.test.tsx`, `delete-mcq-dialog.test.tsx`
 - `src/app/mcqs/page.tsx` (updated), `new/page.tsx`, `[id]/edit/page.tsx`, `[id]/preview/page.tsx`
-- Colocated component tests
+
+**Implementation Record**:
+
+- **List page**: `/mcqs` — Create MCQ button, `McqListTable` with Name/Question/Actions columns
+- **Row actions**: Edit, Preview, Delete dropdown; delete opens `DeleteMcqDialog`
+- **Create/edit**: shared `McqForm` — 2–6 choices, radio for correct answer, Save/Cancel
+- **Preview**: interactive form, POST attempt, correct/incorrect feedback
+- **Tests**: 4 component test files — **6 tests**
+- **Git commit**: *(uncommitted — awaiting user review)*
+
+**Phase exit criteria**:
+
+- [x] Component tests pass (6/6)
+- [x] Full suite: 93/93 tests passing
+- [x] `npm run lint` passes
+- [x] `npm run build` passes (routes: `/mcqs`, `/mcqs/new`, `/mcqs/[id]/edit`, `/mcqs/[id]/preview`)
+- [x] Acceptance: list table, forms, preview attempt, delete confirmation implemented
 
 ---
 
@@ -521,12 +548,12 @@ flowchart LR
 - [x] Phase 1 schema tests pass (`migrations/0002_create_mcqs.test.ts` — 5/5)
 - [x] MCQ service provides create, read, update, delete, and attempt recording
 - [x] All API endpoints validate input with Zod
-- [ ] Teachers can create MCQs with name, question, 2–6 choices, and exactly one correct answer
-- [ ] List page shows MCQs in a shadcn table with Edit, Preview, Delete actions
-- [ ] Create and edit forms have Save and Cancel; persist changes via API
-- [ ] Preview records attempt with `mcq_choice_id`, `user_id`, and `is_correct`
-- [ ] Delete removes MCQ with confirmation dialog (cascades choices/attempts)
-- [ ] `npm run test`, `npm run lint`, and `npm run build` pass
+- [x] Teachers can create MCQs with name, question, 2–6 choices, and exactly one correct answer
+- [x] List page shows MCQs in a shadcn table with Edit, Preview, Delete actions
+- [x] Create and edit forms have Save and Cancel; persist changes via API
+- [x] Preview records attempt with `mcq_choice_id`, `user_id`, and `is_correct`
+- [x] Delete removes MCQ with confirmation dialog (cascades choices/attempts)
+- [x] `npm run test`, `npm run lint`, and `npm run build` pass (93/93 tests, Aug 31, 2026)
 
 ---
 
@@ -611,10 +638,10 @@ When working with this PRD:
 
 **Last Updated**: Aug 31, 2026
 
-**Current Phase**: Phase 4 — UI Pages and Components
+**Current Phase**: Phase 5 — Verification
 
-**Status**: PLANNED (Phase 3 complete; awaiting user review before Phase 4)
+**Status**: PLANNED (Phase 4 complete; awaiting user review before commit)
 
-**Next Steps**: Add shadcn components; TDD MCQ list, form, and preview UI
+**Next Steps**: Manual smoke test; confirm full suite; commit Phase 4 when directed
 
-**Branch**: `feature/mcq-crud` @ `4328364`
+**Branch**: `feature/mcq-crud` @ `ff205d9` *(Phase 4 changes uncommitted locally)*
