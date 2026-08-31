@@ -11,6 +11,7 @@ Date last modified: Aug 31, 2026 (Phase 4 UI pages and components implementation
 | Phase 0 (PRD) | **COMPLETED** |
 | Phase 1 (D1 migration + schema tests) | **COMPLETED and verified** |
 | Phase 2 (MCQ service) | **COMPLETED and verified** |
+| Phase 3 (API routes) | **COMPLETED and verified** |
 | Phase 4 (UI pages and components) | **COMPLETED and verified** |
 | Phase 5 (Verification) | **PLANNED** |
 | Branch | `feature/mcq-crud` |
@@ -24,6 +25,7 @@ Date last modified: Aug 31, 2026 (Phase 4 UI pages and components implementation
 | 1 | `46e18af` | Add Phase 1 MCQ D1 migration and schema tests. |
 | 2 | `36c3f5a` | Add Phase 2 MCQ service with TDD unit tests. |
 | 3 | `4328364` | Add Phase 3 MCQ API handlers, Zod schemas, and route wrappers. |
+| 4 | `363ef51` | Add Phase 4 MCQ UI pages, components, and component tests. |
 
 ---
 
@@ -478,7 +480,7 @@ Each phase follows **Red → Green → Refactor**:
 - **Create/edit**: shared `McqForm` — 2–6 choices, radio for correct answer, Save/Cancel
 - **Preview**: interactive form, POST attempt, correct/incorrect feedback
 - **Tests**: 4 component test files — **6 tests**
-- **Git commit**: *(uncommitted — awaiting user review)*
+- **Git commit**: `363ef51`
 
 **Phase exit criteria**:
 
@@ -640,8 +642,8 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: PLANNED (Phase 4 complete; awaiting user review before commit)
+**Status**: Phase 4 committed and pushed; production deploy in progress
 
-**Next Steps**: Manual smoke test; confirm full suite; commit Phase 4 when directed
+**Next Steps**: Apply remote D1 migration, deploy to Cloudflare, user production revalidation
 
-**Branch**: `feature/mcq-crud` @ `ff205d9` *(Phase 4 changes uncommitted locally)*
+**Branch**: `feature/mcq-crud` @ `363ef51`
