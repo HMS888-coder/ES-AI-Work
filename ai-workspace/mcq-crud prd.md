@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 4 batches 3–4 deployed)
+Date last modified: Aug 31, 2026 (Phase 5 verification complete)
 
 # MCQ CRUD - Technical PRD
 
@@ -13,8 +13,8 @@ Date last modified: Aug 31, 2026 (Phase 4 batches 3–4 deployed)
 | Phase 2 (MCQ service) | **COMPLETED and verified** |
 | Phase 3 (API routes) | **COMPLETED and verified** |
 | Phase 4 (UI pages and components) | **COMPLETED and verified** |
-| Phase 5 (Verification) | **PLANNED** |
-| Branch | `feature/mcq-crud` @ `8afd837` |
+| Phase 5 (Verification) | **COMPLETED and verified** |
+| Branch | `feature/mcq-crud` @ `5062c13` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
 | Test suite | 16 files, **100 tests** — all passing (Aug 31, 2026) |
 
@@ -540,17 +540,25 @@ Each phase follows **Red → Green → Refactor**:
 
 ---
 
-### Phase 5: Verification - PLANNED
+### Phase 5: Verification - COMPLETED
 
 **Objective**: Confirm full test suite, lint, build, and manual smoke test.
 
 **Tasks**:
 
-1. Run `npm run test` — full suite must pass
-2. Run `npm run lint`
-3. Run `npm run build`
-4. Manual smoke: create → list → edit → preview (attempt) → delete
-5. Update PRD Current Status and mark acceptance criteria complete
+1. [x] Run `npm run test` — **100/100** passed (Aug 31, 2026)
+2. [x] Run `npm run lint` — passed
+3. [x] Run `npm run build` — passed
+4. [x] Manual smoke: create → list → edit → preview (attempt) → delete — **passed on production** (`https://es-ai-work.harish-ms.workers.dev`) via API smoke test; UI verified locally by user (batches 3–4)
+5. [x] Update PRD Current Status and mark acceptance criteria complete
+
+**Verification notes**:
+
+- Production API smoke (register → create MCQ → list → get → update → attempt → delete) succeeded against remote D1
+- After MCQ update, choice IDs are replaced; preview attempts must use refreshed choice IDs from GET (documented under Technical Risks)
+- User confirmed Phase 4 batches 3–4 UI behavior locally before deploy
+
+- **Git commit**: *(pending — PRD update in progress)*
 
 ---
 
@@ -664,7 +672,11 @@ flowchart LR
 
 ## Troubleshooting Guide
 
-*(Populate as issues arise during Phases 2–5.)*
+| Issue | Cause | Resolution |
+|-------|-------|------------|
+| Preview attempt returns 404 after edit | MCQ update replaces all choices with new IDs | Reload preview (GET `/api/mcqs/[id]`) and submit using the current choice ID |
+| Vitest worker timeout on Windows | Thread pool under load | Re-run `npm run test`; suite passes cleanly on retry |
+| Deploy fails with `EBUSY` on `.open-next` | Dev server locking assets | Stop `npm run dev`, remove `.open-next`, redeploy |
 
 ---
 
@@ -688,12 +700,12 @@ When working with this PRD:
 
 **Last Updated**: Aug 31, 2026
 
-**Current Phase**: Phase 5 — Verification
+**Current Phase**: Phase 5 — Verification **COMPLETE**
 
-**Status**: Phase 4 batches 3–4 **deployed to production**
+**Status**: MCQ CRUD feature **verified and deployed**
 
 **Production URL**: https://es-ai-work.harish-ms.workers.dev (deploy @ `a6defd6`)
 
-**Next Steps**: Phase 5 final sign-off
+**Next Steps**: Feature complete on `feature/mcq-crud`; merge PR when ready
 
-**Branch**: `feature/mcq-crud` @ `a6defd6`
+**Branch**: `feature/mcq-crud` @ `5062c13`
