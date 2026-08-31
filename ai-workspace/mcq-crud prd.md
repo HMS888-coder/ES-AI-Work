@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 4 deployed to production)
+Date last modified: Aug 31, 2026 (Phase 4 post-sanity-test UI enhancements)
 
 # MCQ CRUD - Technical PRD
 
@@ -16,7 +16,7 @@ Date last modified: Aug 31, 2026 (Phase 4 deployed to production)
 | Phase 5 (Verification) | **PLANNED** |
 | Branch | `feature/mcq-crud` @ `dc59be9` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
-| Test suite | 15 files, **93 tests** — all passing (Aug 31, 2026) |
+| Test suite | 15 files, **95 tests** — all passing (Aug 31, 2026) |
 
 **Git commits (traceability):**
 
@@ -290,7 +290,7 @@ Use shadcn/ui components: `table`, `button`, `field`, `input`, `textarea`, `drop
 
 - Display MCQ question text and choices as radio buttons
 - Submit: POST `/api/mcqs/[id]/attempts` with `{ mcqChoiceId, userId }`
-- Show correct/incorrect feedback after submission
+- Show correct/incorrect feedback after submission; correct choice in green, wrong selection in red
 
 ---
 
@@ -486,10 +486,21 @@ Each phase follows **Red → Green → Refactor**:
 **Phase exit criteria**:
 
 - [x] Component tests pass (6/6)
-- [x] Full suite: 93/93 tests passing
+- [x] Full suite: 95/95 tests passing
 - [x] `npm run lint` passes
 - [x] `npm run build` passes (routes: `/mcqs`, `/mcqs/new`, `/mcqs/[id]/edit`, `/mcqs/[id]/preview`)
 - [x] Acceptance: list table, forms, preview attempt, delete confirmation implemented
+
+**Post-sanity-test enhancements** (still Phase 4 — not Phase 5):
+
+| # | Enhancement | File |
+|---|-------------|------|
+| 1 | Preview page keeps header **Back to list**; form footer button renamed to **Cancel** (navigates to `/mcqs`) | `src/components/mcq-preview.tsx` |
+| 2 | After attempt submit: correct choice highlighted **green**, wrong selection **red**; inputs locked | `src/components/mcq-preview.tsx` |
+| 3 | Duplicate choice text/id validation on create and edit with inline row errors | `src/components/mcq-form.tsx` |
+
+- **Tests added**: `mcq-preview.test.tsx` (correct + incorrect color cases), `mcq-form.test.tsx` (duplicate text) — **95/95** suite passing
+- **Git commit**: *(pending — local only)*
 
 ---
 
@@ -643,12 +654,12 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: Phase 4 committed, pushed, and deployed to production (Aug 31, 2026)
+**Status**: Phase 4 post-sanity-test enhancements implemented locally; Phase 5 still PLANNED for final sign-off
 
 **Production URL**: https://es-ai-work.harish-ms.workers.dev
 
 **Remote D1**: migration `0002_create_mcqs.sql` applied to `quizmaker-db`
 
-**Next Steps**: User production revalidation (create → list → edit → preview → delete); report enhancements for Phase 5
+**Next Steps**: Verify enhancements locally; commit and redeploy when directed; Phase 5 final acceptance
 
-**Branch**: `feature/mcq-crud` @ `dc59be9`
+**Branch**: `feature/mcq-crud` @ `a9b1dd3`

@@ -79,4 +79,19 @@ describe("McqForm", () => {
 		expect(await screen.findByRole("alert")).toHaveTextContent(/all choices must have text/i);
 		expect(fetch).not.toHaveBeenCalled();
 	});
+
+	it("shows duplicate choice errors and blocks submit", async () => {
+		const user = userEvent.setup();
+		render(<McqForm mode="create" />);
+
+		await user.type(screen.getByLabelText(/^name$/i), "Biology Quiz");
+		await user.type(screen.getByLabelText(/^question$/i), "Which organelle performs photosynthesis?");
+		await user.type(screen.getByLabelText(/^choice 1$/i), "Chloroplast");
+		await user.type(screen.getByLabelText(/^choice 2$/i), "Chloroplast");
+		await user.click(screen.getByRole("button", { name: /save/i }));
+
+		expect(await screen.findByText(/duplicate choice text is not allowed/i)).toBeInTheDocument();
+		expect(screen.getAllByText(/^Duplicate choice$/i)).toHaveLength(2);
+		expect(fetch).not.toHaveBeenCalled();
+	});
 });

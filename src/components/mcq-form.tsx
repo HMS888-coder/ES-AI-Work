@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { McqResponse } from "@/lib/mcq/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 
 type ChoiceDraft = {
+	id?: string;
 	text: string;
 };
 
@@ -25,6 +26,78 @@ type McqFormProps = {
 
 const DEFAULT_CHOICES: ChoiceDraft[] = [{ text: "" }, { text: "" }];
 
+function getDuplicateChoiceIndices(choices: ChoiceDraft[]): Set<number> {
+	const indices = new Set<number>();
+
+	const textMap = new Map<string, number[]>();
+	for (const [index, choice] of choices.entries()) {
+		const key = choice.text.trim().toLowerCase();
+		if (!key) {
+			continue;
+		}
+		const existing = textMap.get(key) ?? [];
+		existing.push(index);
+		textMap.set(key, existing);
+	}
+
+	for (const duplicateIndices of textMap.values()) {
+		if (duplicateIndices.length > 1) {
+			for (const index of duplicateIndices) {
+				indices.add(index);
+			}
+		}
+	}
+
+	const idMap = new Map<string, number[]>();
+	for (const [index, choice] of choices.entries()) {
+		if (!choice.id) {
+			continue;
+		}
+		const existing = idMap.get(choice.id) ?? [];
+		existing.push(index);
+		idMap.set(choice.id, existing);
+	}
+
+	for (const duplicateIndices of idMap.values()) {
+		if (duplicateIndices.length > 1) {
+			for (const index of duplicateIndices) {
+				indices.add(index);
+			}
+		}
+	}
+
+	return indices;
+}
+
+function hasDuplicateChoiceIds(choices: ChoiceDraft[]): boolean {
+	const seenIds = new Set<string>();
+	for (const choice of choices) {
+		if (!choice.id) {
+			continue;
+		}
+		if (seenIds.has(choice.id)) {
+			return true;
+		}
+		seenIds.add(choice.id);
+	}
+	return false;
+}
+
+function hasDuplicateChoiceText(choices: ChoiceDraft[]): boolean {
+	const seenText = new Set<string>();
+	for (const choice of choices) {
+		const key = choice.text.trim().toLowerCase();
+		if (!key) {
+			continue;
+		}
+		if (seenText.has(key)) {
+			return true;
+		}
+		seenText.add(key);
+	}
+	return false;
+}
+
 export function McqForm({ mode, mcqId }: McqFormProps) {
 	const router = useRouter();
 	const [name, setName] = useState("");
@@ -34,6 +107,11 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isLoading, setIsLoading] = useState(mode === "edit");
+
+	const duplicateIndices = useMemo(
+		() => getDuplicateChoiceIndices(choices),
+		[choices],
+	);
 
 	useEffect(() => {
 		if (mode !== "edit" || !mcqId) {
@@ -60,7 +138,10 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 				setName(data.mcq.name);
 				setQuestion(data.mcq.question);
 				setChoices(
-					data.mcq.choices?.map((choice) => ({ text: choice.text })) ?? DEFAULT_CHOICES,
+					data.mcq.choices?.map((choice) => ({
+						id: choice.id,
+						text: choice.text,
+					})) ?? DEFAULT_CHOICES,
 				);
 				const correctChoiceIndex =
 					data.mcq.choices?.findIndex((choice) => choice.isCorrect) ?? 0;
@@ -96,7 +177,9 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 	}
 
 	function updateChoiceText(index: number, text: string) {
-		setChoices(choices.map((choice, i) => (i === index ? { text } : choice)));
+		setChoices(
+			choices.map((choice, i) => (i === index ? { ...choice, text } : choice)),
+		);
 	}
 
 	function validateForm(): string | null {
@@ -108,6 +191,12 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 		}
 		if (choices.some((choice) => !choice.text.trim())) {
 			return "All choices must have text";
+		}
+		if (hasDuplicateChoiceIds(choices)) {
+			return "Duplicate choice id is not allowed";
+		}
+		if (hasDuplicateChoiceText(choices)) {
+			return "Duplicate choice text is not allowed";
 		}
 		return null;
 	}
@@ -207,24 +296,30 @@ export function McqForm({ mode, mcqId }: McqFormProps) {
 						className="gap-3"
 					>
 						{choices.map((choice, index) => (
-							<div key={index} className="flex items-center gap-2">
-								<RadioGroupItem value={String(index)} id={`choice-${index}`} />
-								<Input
-									aria-label={`Choice ${index + 1}`}
-									value={choice.text}
-									onChange={(event) => updateChoiceText(index, event.target.value)}
-									placeholder={`Choice ${index + 1}`}
-									className="flex-1"
-								/>
-								<Button
-									type="button"
-									variant="outline"
-									size="sm"
-									disabled={choices.length <= 2}
-									onClick={() => removeChoice(index)}
-								>
-									Remove
-								</Button>
+							<div key={choice.id ?? index} className="space-y-1">
+								<div className="flex items-center gap-2">
+									<RadioGroupItem value={String(index)} id={`choice-${index}`} />
+									<Input
+										aria-label={`Choice ${index + 1}`}
+										value={choice.text}
+										onChange={(event) => updateChoiceText(index, event.target.value)}
+										placeholder={`Choice ${index + 1}`}
+										className="flex-1"
+										aria-invalid={duplicateIndices.has(index)}
+									/>
+									<Button
+										type="button"
+										variant="outline"
+										size="sm"
+										disabled={choices.length <= 2}
+										onClick={() => removeChoice(index)}
+									>
+										Remove
+									</Button>
+								</div>
+								{duplicateIndices.has(index) ? (
+									<FieldError>Duplicate choice</FieldError>
+								) : null}
 							</div>
 						))}
 					</RadioGroup>

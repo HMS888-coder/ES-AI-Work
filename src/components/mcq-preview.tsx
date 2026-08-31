@@ -11,14 +11,38 @@ import {
 	FieldLabel,
 } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { cn } from "@/lib/utils";
 
 type McqPreviewProps = {
 	mcqId: string;
 };
 
+function getChoiceRowClassName(
+	choiceId: string,
+	hasSubmitted: boolean,
+	correctChoiceId: string | undefined,
+	submittedChoiceId: string | null,
+): string {
+	if (!hasSubmitted) {
+		return "";
+	}
+
+	if (choiceId === correctChoiceId) {
+		return "text-green-600 dark:text-green-400 font-medium";
+	}
+
+	if (choiceId === submittedChoiceId) {
+		return "text-red-600 dark:text-red-400 font-medium";
+	}
+
+	return "";
+}
+
 export function McqPreview({ mcqId }: McqPreviewProps) {
 	const [mcq, setMcq] = useState<McqResponse | null>(null);
 	const [selectedChoiceId, setSelectedChoiceId] = useState<string>("");
+	const [submittedChoiceId, setSubmittedChoiceId] = useState<string | null>(null);
+	const [hasSubmitted, setHasSubmitted] = useState(false);
 	const [feedback, setFeedback] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -88,6 +112,8 @@ export function McqPreview({ mcqId }: McqPreviewProps) {
 				return;
 			}
 
+			setSubmittedChoiceId(selectedChoiceId);
+			setHasSubmitted(true);
 			setFeedback(data.attempt?.isCorrect ? "Correct!" : "Incorrect.");
 		} catch {
 			setError("Failed to submit attempt");
@@ -108,6 +134,8 @@ export function McqPreview({ mcqId }: McqPreviewProps) {
 		return <p role="alert">MCQ not found</p>;
 	}
 
+	const correctChoiceId = mcq.choices?.find((choice) => choice.isCorrect)?.id;
+
 	return (
 		<form onSubmit={handleSubmit} className="space-y-6">
 			<div className="space-y-2">
@@ -121,10 +149,26 @@ export function McqPreview({ mcqId }: McqPreviewProps) {
 						value={selectedChoiceId}
 						onValueChange={setSelectedChoiceId}
 						className="gap-3"
+						disabled={hasSubmitted}
 					>
 						{mcq.choices?.map((choice) => (
-							<div key={choice.id} className="flex items-center gap-2">
-								<RadioGroupItem value={choice.id} id={`preview-${choice.id}`} />
+							<div
+								key={choice.id}
+								className={cn(
+									"flex items-center gap-2",
+									getChoiceRowClassName(
+										choice.id,
+										hasSubmitted,
+										correctChoiceId,
+										submittedChoiceId,
+									),
+								)}
+							>
+								<RadioGroupItem
+									value={choice.id}
+									id={`preview-${choice.id}`}
+									disabled={hasSubmitted}
+								/>
 								<label htmlFor={`preview-${choice.id}`} className="text-sm">
 									{choice.text}
 								</label>
@@ -135,7 +179,7 @@ export function McqPreview({ mcqId }: McqPreviewProps) {
 				{error ? <FieldError>{error}</FieldError> : null}
 				{feedback ? <p role="status">{feedback}</p> : null}
 				<div className="flex gap-2">
-					<Button type="submit" disabled={isSubmitting}>
+					<Button type="submit" disabled={isSubmitting || hasSubmitted}>
 						Submit answer
 					</Button>
 					<Button
@@ -144,7 +188,7 @@ export function McqPreview({ mcqId }: McqPreviewProps) {
 						variant="outline"
 						render={<Link href="/mcqs" />}
 					>
-						Back to list
+						Cancel
 					</Button>
 				</div>
 			</FieldGroup>
