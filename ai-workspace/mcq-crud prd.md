@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 0 PRD + Phase 1 implementation record)
+Date last modified: Aug 31, 2026 (Phase 2 MCQ service implementation record)
 
 # MCQ CRUD - Technical PRD
 
@@ -10,15 +10,18 @@ Date last modified: Aug 31, 2026 (Phase 0 PRD + Phase 1 implementation record)
 |------|--------|
 | Phase 0 (PRD) | **COMPLETED** |
 | Phase 1 (D1 migration + schema tests) | **COMPLETED and verified** |
-| Phases 2–5 | **PLANNED** |
+| Phase 2 (MCQ service) | **COMPLETED and verified** |
+| Phases 3–5 | **PLANNED** |
 | Branch | `feature/mcq-crud` |
-| Test suite | 9 files, **48 tests** — all passing (Aug 31, 2026) |
+| Test suite | 10 files, **68 tests** — all passing (Aug 31, 2026) |
 
 **Git commits (traceability):**
 
 | Phase | Commit | Message |
 |-------|--------|---------|
+| 0 | `6f55b34` | Add Phase 0 MCQ CRUD technical PRD with Phase 1 implementation record. |
 | 1 | `46e18af` | Add Phase 1 MCQ D1 migration and schema tests. |
+| 2 | `edbb86c` | Add Phase 2 MCQ service with TDD unit tests. |
 
 ---
 
@@ -358,20 +361,44 @@ Each phase follows **Red → Green → Refactor**:
 
 ---
 
-### Phase 2: MCQ Service - PLANNED
+### Phase 2: MCQ Service - COMPLETED
 
 **Objective**: Implement the MCQ service with CRUD, choice management, and attempt recording.
 
 **TDD approach**: Write `mcq-service.test.ts` with mocked D1 first (RED). Implement `mcq-service.ts` until tests pass (GREEN).
 
-**Functions**:
+**Tests first (RED)** — `src/lib/services/mcq-service.test.ts` (20 tests):
 
-- `listMcqs`, `getMcqById`, `createMcq`, `updateMcq`, `deleteMcq`, `recordAttempt`
+| Area | Cases |
+|------|-------|
+| `listMcqs` | Empty list; ordered by `updated_at DESC` |
+| `getMcqById` | Returns MCQ + choices by `position`; null when missing |
+| `createMcq` | Inserts MCQ + choices; `InvalidUserError`; `InvalidChoicesError` (count, none correct, multiple correct) |
+| `updateMcq` | Updates header and replaces choices; null when missing |
+| `deleteMcq` | Removes MCQ; false when missing |
+| `recordAttempt` | Correct/incorrect; `McqNotFoundError`; `InvalidUserError`; `ChoiceNotFoundError` |
 
 **Deliverables**:
 
 - `src/lib/services/mcq-service.ts`
-- `src/lib/services/mcq-service.test.ts`
+- `src/lib/services/mcq-service.test.ts` (20 tests passing)
+
+**Implementation Record**:
+
+- **Service**: `src/lib/services/mcq-service.ts`
+  - Errors: `InvalidUserError`, `InvalidChoicesError`, `McqNotFoundError`, `ChoiceNotFoundError`
+  - Choice validation: 2–6 choices, exactly one correct, non-empty text
+  - User lookup via `getUserById` from `user-service.ts` on create and recordAttempt
+  - `updateMcq`: replaces choices (DELETE + INSERT); bumps `updated_at`
+- **Tests**: `src/lib/services/mcq-service.test.ts` — **20 tests**; mocks D1 in-memory state + `vi.mock` on `user-service`
+- **Git commit**: `edbb86c`
+
+**Phase exit criteria**:
+
+- [x] `npm run test` passes for mcq-service tests (20/20)
+- [x] Full suite: 68/68 tests passing
+- [x] `npm run lint` passes
+- [x] Acceptance: MCQ service provides create, read, update, delete, and attempt recording
 
 ---
 
@@ -461,7 +488,7 @@ flowchart LR
 
 - [x] Phase 1 migration defines `mcqs`, `mcq_choices`, `mcq_attempts` with correct columns, FKs, and indexes
 - [x] Phase 1 schema tests pass (`migrations/0002_create_mcqs.test.ts` — 5/5)
-- [ ] MCQ service provides create, read, update, delete, and attempt recording
+- [x] MCQ service provides create, read, update, delete, and attempt recording
 - [ ] All API endpoints validate input with Zod
 - [ ] Teachers can create MCQs with name, question, 2–6 choices, and exactly one correct answer
 - [ ] List page shows MCQs in a shadcn table with Edit, Preview, Delete actions
@@ -553,10 +580,10 @@ When working with this PRD:
 
 **Last Updated**: Aug 31, 2026
 
-**Current Phase**: Phase 2 — MCQ Service
+**Current Phase**: Phase 3 — API Routes
 
-**Status**: PLANNED (Phase 1 complete; awaiting user review before Phase 2)
+**Status**: PLANNED (Phase 2 complete; awaiting user review before Phase 3)
 
-**Next Steps**: TDD `mcq-service.ts` with mocked D1 tests
+**Next Steps**: TDD `mcq-schemas.ts`, `mcq-handlers.ts`, and route wrappers
 
-**Branch**: `feature/mcq-crud` @ `46e18af`
+**Branch**: `feature/mcq-crud` @ `edbb86c`
