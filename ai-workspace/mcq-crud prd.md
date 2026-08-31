@@ -27,7 +27,7 @@ Date last modified: Aug 31, 2026 (Phase 4 enhancements deployed to production)
 | 2 | `36c3f5a` | Add Phase 2 MCQ service with TDD unit tests. |
 | 3 | `4328364` | Add Phase 3 MCQ API handlers, Zod schemas, and route wrappers. |
 | 4 | `363ef51` | Add Phase 4 MCQ UI pages, components, and component tests. |
-| 4 (enhancements) | `7264655` | Add Phase 4 post-sanity-test MCQ UI enhancements. |
+| 4 (UX polish) | `ebbf672` | Add Phase 4 UX polish: Submit label, empty warning, tooltips, delete copy. |
 
 ---
 
@@ -512,7 +512,7 @@ Each phase follows **Red → Green → Refactor**:
 | 6 | shadcn **Tooltip** on truncated question cells (full text on hover) | `src/components/ui/tooltip.tsx`, `mcq-list-table.tsx` |
 | 7 | Delete dialog: **"This action cannot be undone"** + cascade warning | `src/components/delete-mcq-dialog.tsx` |
 
-- **Git commit**: *(pending — local only)*
+- **Git commit**: `ebbf672`
 
 ---
 
@@ -666,14 +666,6 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: Phase 4 post-sanity-test enhancements committed, pushed, and deployed (Aug 31, 2026)
+**Status**: Phase 4 UX polish committed; production deploy in progress
 
-**Production URL**: https://es-ai-work.harish-ms.workers.dev
-
-**Worker version**: `a452c321-500a-414a-afbc-3415695bc322`
-
-**Remote D1**: migration `0002_create_mcqs.sql` applied to `quizmaker-db`
-
-**Next Steps**: Revalidate enhancements in production; Phase 5 final sign-off
-
-**Branch**: `feature/mcq-crud` @ `014b798`
+**Branch**: `feature/mcq-crud` @ `ebbf672`
