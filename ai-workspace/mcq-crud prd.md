@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 4 post-sanity-test UI enhancements)
+Date last modified: Aug 31, 2026 (Phase 4 enhancements deployed to production)
 
 # MCQ CRUD - Technical PRD
 
@@ -14,7 +14,7 @@ Date last modified: Aug 31, 2026 (Phase 4 post-sanity-test UI enhancements)
 | Phase 3 (API routes) | **COMPLETED and verified** |
 | Phase 4 (UI pages and components) | **COMPLETED and verified** |
 | Phase 5 (Verification) | **PLANNED** |
-| Branch | `feature/mcq-crud` @ `7264655` |
+| Branch | `feature/mcq-crud` @ `014b798` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
 | Test suite | 15 files, **95 tests** — all passing (Aug 31, 2026) |
 
@@ -655,8 +655,14 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: Phase 4 enhancements committed; production deploy in progress
+**Status**: Phase 4 post-sanity-test enhancements committed, pushed, and deployed (Aug 31, 2026)
 
-**Next Steps**: Deploy to Cloudflare; Phase 5 final sign-off
+**Production URL**: https://es-ai-work.harish-ms.workers.dev
 
-**Branch**: `feature/mcq-crud` @ `7264655`
+**Worker version**: `a452c321-500a-414a-afbc-3415695bc322`
+
+**Remote D1**: migration `0002_create_mcqs.sql` applied to `quizmaker-db`
+
+**Next Steps**: Revalidate enhancements in production; Phase 5 final sign-off
+
+**Branch**: `feature/mcq-crud` @ `014b798`
