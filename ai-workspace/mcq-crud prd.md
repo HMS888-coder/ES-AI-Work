@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 2 MCQ service implementation record)
+Date last modified: Aug 31, 2026 (Phase 3 API routes implementation record)
 
 # MCQ CRUD - Technical PRD
 
@@ -11,9 +11,10 @@ Date last modified: Aug 31, 2026 (Phase 2 MCQ service implementation record)
 | Phase 0 (PRD) | **COMPLETED** |
 | Phase 1 (D1 migration + schema tests) | **COMPLETED and verified** |
 | Phase 2 (MCQ service) | **COMPLETED and verified** |
-| Phases 3–5 | **PLANNED** |
+| Phase 3 (API routes) | **COMPLETED and verified** |
+| Phases 4–5 | **PLANNED** |
 | Branch | `feature/mcq-crud` |
-| Test suite | 10 files, **68 tests** — all passing (Aug 31, 2026) |
+| Test suite | 11 files, **87 tests** — all passing (Aug 31, 2026) |
 
 **Git commits (traceability):**
 
@@ -22,6 +23,7 @@ Date last modified: Aug 31, 2026 (Phase 2 MCQ service implementation record)
 | 0 | `6f55b34` | Add Phase 0 MCQ CRUD technical PRD with Phase 1 implementation record. |
 | 1 | `46e18af` | Add Phase 1 MCQ D1 migration and schema tests. |
 | 2 | `36c3f5a` | Add Phase 2 MCQ service with TDD unit tests. |
+| 3 | `bbaada3` | Add Phase 3 MCQ API handlers, Zod schemas, and route wrappers. |
 
 ---
 
@@ -402,18 +404,47 @@ Each phase follows **Red → Green → Refactor**:
 
 ---
 
-### Phase 3: API Routes - PLANNED
+### Phase 3: API Routes - COMPLETED
 
 **Objective**: Implement MCQ API endpoints with Zod validation.
 
 **TDD approach**: Write `mcq-handlers.test.ts` with mocked service first (RED). Implement handlers + thin route wrappers (GREEN).
 
+**Tests first (RED)** — `src/lib/services/mcq-handlers.test.ts` (19 tests):
+
+| Handler | Cases |
+|---------|-------|
+| `handleListMcqs` | 200 with serialized mcqs; 500 on error |
+| `handleGetMcq` | 200 with mcq + choices; 404 when missing |
+| `handleCreateMcq` | 201; 400 validation/choices; 404 user not found |
+| `handleUpdateMcq` | 200; 400 validation; 404 when missing |
+| `handleDeleteMcq` | 200; 404 when missing |
+| `handleRecordAttempt` | 201; 400 validation; 404 MCQ/user/choice not found |
+
 **Deliverables**:
 
 - `src/lib/validators/mcq-schemas.ts`
 - `src/lib/services/mcq-handlers.ts`
-- `src/lib/services/mcq-handlers.test.ts`
-- Route handlers under `src/app/api/mcqs/`
+- `src/lib/services/mcq-handlers.test.ts` (19 tests passing)
+- `src/app/api/mcqs/route.ts` — GET, POST
+- `src/app/api/mcqs/[id]/route.ts` — GET, PUT, DELETE
+- `src/app/api/mcqs/[id]/attempts/route.ts` — POST
+
+**Implementation Record**:
+
+- **Zod schemas**: `src/lib/validators/mcq-schemas.ts` — `createMcqSchema`, `updateMcqSchema`, `recordAttemptSchema` (`.strict()`)
+- **Handlers**: `src/lib/services/mcq-handlers.ts` — serialize DB rows to camelCase API responses
+- **Route delegation**: thin wrappers via `getCloudflareContext()` → `env.DB` → handlers
+- **Tests**: `src/lib/services/mcq-handlers.test.ts` — **19 tests**
+- **Git commit**: `bbaada3`
+
+**Phase exit criteria**:
+
+- [x] `npm run test` passes for mcq-handlers tests (19/19)
+- [x] Full suite: 87/87 tests passing
+- [x] `npm run lint` passes
+- [x] `npm run build` passes (routes: `/api/mcqs`, `/api/mcqs/[id]`, `/api/mcqs/[id]/attempts`)
+- [x] Acceptance: all API endpoints validate input with Zod
 
 ---
 
@@ -489,7 +520,7 @@ flowchart LR
 - [x] Phase 1 migration defines `mcqs`, `mcq_choices`, `mcq_attempts` with correct columns, FKs, and indexes
 - [x] Phase 1 schema tests pass (`migrations/0002_create_mcqs.test.ts` — 5/5)
 - [x] MCQ service provides create, read, update, delete, and attempt recording
-- [ ] All API endpoints validate input with Zod
+- [x] All API endpoints validate input with Zod
 - [ ] Teachers can create MCQs with name, question, 2–6 choices, and exactly one correct answer
 - [ ] List page shows MCQs in a shadcn table with Edit, Preview, Delete actions
 - [ ] Create and edit forms have Save and Cancel; persist changes via API
@@ -580,10 +611,10 @@ When working with this PRD:
 
 **Last Updated**: Aug 31, 2026
 
-**Current Phase**: Phase 3 — API Routes
+**Current Phase**: Phase 4 — UI Pages and Components
 
-**Status**: PLANNED (Phase 2 complete; awaiting user review before Phase 3)
+**Status**: PLANNED (Phase 3 complete; awaiting user review before Phase 4)
 
-**Next Steps**: TDD `mcq-schemas.ts`, `mcq-handlers.ts`, and route wrappers
+**Next Steps**: Add shadcn components; TDD MCQ list, form, and preview UI
 
-**Branch**: `feature/mcq-crud` @ `36c3f5a`
+**Branch**: `feature/mcq-crud` @ `bbaada3`
