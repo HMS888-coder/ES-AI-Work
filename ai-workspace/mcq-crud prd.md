@@ -16,7 +16,7 @@ Date last modified: Aug 31, 2026 (Phase 4 enhancements deployed to production)
 | Phase 5 (Verification) | **PLANNED** |
 | Branch | `feature/mcq-crud` @ `014b798` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
-| Test suite | 15 files, **95 tests** — all passing (Aug 31, 2026) |
+| Test suite | 15 files, **97 tests** — all passing (Aug 31, 2026) |
 
 **Git commits (traceability):**
 
@@ -503,6 +503,17 @@ Each phase follows **Red → Green → Refactor**:
 - **Tests added**: `mcq-preview.test.tsx` (correct + incorrect color cases), `mcq-form.test.tsx` (duplicate text) — **95/95** suite passing
 - **Git commit**: `7264655`
 
+**Post-sanity-test enhancements (batch 2)** — still Phase 4:
+
+| # | Enhancement | File |
+|---|-------------|------|
+| 4 | Rename preview **Submit answer** → **Submit** | `src/components/mcq-preview.tsx` |
+| 5 | Empty list warning with **Create MCQ** CTA when no MCQs exist | `src/components/mcq-list-table.tsx` |
+| 6 | shadcn **Tooltip** on truncated question cells (full text on hover) | `src/components/ui/tooltip.tsx`, `mcq-list-table.tsx` |
+| 7 | Delete dialog: **"This action cannot be undone"** + cascade warning | `src/components/delete-mcq-dialog.tsx` |
+
+- **Git commit**: *(pending — local only)*
+
 ---
 
 ### Phase 5: Verification - PLANNED
@@ -620,10 +631,10 @@ flowchart LR
 ### User Experience Risks
 
 - **Risk**: Truncated question text in list table may hide important context
-- **Mitigation**: Full question visible on edit and preview pages; consider tooltip later
+- **Mitigation**: **Mitigated** — shadcn Tooltip on truncated list cells; full question on edit/preview pages
 
 - **Risk**: Delete is destructive (cascades attempts)
-- **Mitigation**: AlertDialog confirmation before delete
+- **Mitigation**: **Mitigated** — AlertDialog confirmation with irreversible warning and cascade message before delete
 
 ---
 

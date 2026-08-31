@@ -57,7 +57,7 @@ describe("McqPreview", () => {
 		expect(await screen.findByText(/Which organelle performs photosynthesis/i)).toBeInTheDocument();
 
 		await user.click(screen.getByRole("radio", { name: /chloroplast/i }));
-		await user.click(screen.getByRole("button", { name: /submit answer/i }));
+		await user.click(screen.getByRole("button", { name: /^submit$/i }));
 
 		await waitFor(() => {
 			expect(fetch).toHaveBeenCalledWith("/api/mcqs/mcq-1/attempts", {
@@ -115,7 +115,7 @@ describe("McqPreview", () => {
 		expect(await screen.findByText(/Which organelle performs photosynthesis/i)).toBeInTheDocument();
 
 		await user.click(screen.getByRole("radio", { name: /mitochondria/i }));
-		await user.click(screen.getByRole("button", { name: /submit answer/i }));
+		await user.click(screen.getByRole("button", { name: /^submit$/i }));
 
 		expect(await screen.findByRole("status")).toHaveTextContent(/incorrect/i);
 		expect(screen.getByText("Mitochondria").closest("div")).toHaveClass("text-red-600");

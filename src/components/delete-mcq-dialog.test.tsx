@@ -31,6 +31,8 @@ describe("DeleteMcqDialog", () => {
 			/>,
 		);
 
+		expect(screen.getByText(/cannot be undone/i)).toBeInTheDocument();
+
 		await user.click(screen.getByRole("button", { name: /delete/i }));
 
 		await waitFor(() => {

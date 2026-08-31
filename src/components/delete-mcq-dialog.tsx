@@ -58,8 +58,8 @@ export function DeleteMcqDialog({
 				<AlertDialogHeader>
 					<AlertDialogTitle>Delete MCQ?</AlertDialogTitle>
 					<AlertDialogDescription>
-						This will permanently delete &quot;{mcqName}&quot; and all related choices and
-						attempts.
+						This action cannot be undone. This will permanently delete &quot;{mcqName}&quot;
+						and all related choices and attempts.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				{error ? <p role="alert">{error}</p> : null}

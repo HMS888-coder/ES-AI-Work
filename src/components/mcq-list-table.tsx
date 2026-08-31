@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { McqListItem } from "@/lib/mcq/types";
 import { McqRowActions } from "@/components/mcq-row-actions";
+import { Button } from "@/components/ui/button";
 import {
 	Table,
 	TableBody,
@@ -11,8 +13,16 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-function truncateQuestion(question: string, maxLength = 80): string {
+const QUESTION_TRUNCATE_LENGTH = 80;
+
+export function truncateQuestion(question: string, maxLength = QUESTION_TRUNCATE_LENGTH): string {
 	if (question.length <= maxLength) {
 		return question;
 	}
@@ -36,6 +46,22 @@ async function fetchMcqs(): Promise<{ mcqs: McqListItem[]; error: string | null 
 	} catch {
 		return { mcqs: [], error: "Failed to load MCQs" };
 	}
+}
+
+function QuestionCell({ question }: { question: string }) {
+	const displayText = truncateQuestion(question);
+	const isTruncated = question.length > QUESTION_TRUNCATE_LENGTH;
+
+	if (!isTruncated) {
+		return <span>{displayText}</span>;
+	}
+
+	return (
+		<Tooltip>
+			<TooltipTrigger className="cursor-help truncate text-left">{displayText}</TooltipTrigger>
+			<TooltipContent className="max-w-sm">{question}</TooltipContent>
+		</Tooltip>
+	);
 }
 
 export function McqListTable() {
@@ -80,35 +106,52 @@ export function McqListTable() {
 	}
 
 	if (mcqs.length === 0) {
-		return <p className="text-muted-foreground">No MCQs yet. Create your first question.</p>;
+		return (
+			<div
+				role="alert"
+				className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 text-amber-950 dark:text-amber-100"
+			>
+				<p className="font-medium">No MCQs in your test bank yet.</p>
+				<p className="mt-1 text-sm">Create an MCQ to get started.</p>
+				<Button
+					nativeButton={false}
+					className="mt-3"
+					render={<Link href="/mcqs/new" />}
+				>
+					Create MCQ
+				</Button>
+			</div>
+		);
 	}
 
 	return (
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead>Name</TableHead>
-					<TableHead>Question</TableHead>
-					<TableHead className="w-[70px]">Actions</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{mcqs.map((mcq) => (
-					<TableRow key={mcq.id}>
-						<TableCell className="font-medium">{mcq.name}</TableCell>
-						<TableCell className="max-w-md truncate">
-							{truncateQuestion(mcq.question)}
-						</TableCell>
-						<TableCell>
-							<McqRowActions
-								mcqId={mcq.id}
-								mcqName={mcq.name}
-								onDeleted={() => void refreshMcqs()}
-							/>
-						</TableCell>
+		<TooltipProvider>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Name</TableHead>
+						<TableHead>Question</TableHead>
+						<TableHead className="w-[70px]">Actions</TableHead>
 					</TableRow>
-				))}
-			</TableBody>
-		</Table>
+				</TableHeader>
+				<TableBody>
+					{mcqs.map((mcq) => (
+						<TableRow key={mcq.id}>
+							<TableCell className="font-medium">{mcq.name}</TableCell>
+							<TableCell className="max-w-md truncate">
+								<QuestionCell question={mcq.question} />
+							</TableCell>
+							<TableCell>
+								<McqRowActions
+									mcqId={mcq.id}
+									mcqName={mcq.name}
+									onDeleted={() => void refreshMcqs()}
+								/>
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</TooltipProvider>
 	);
 }

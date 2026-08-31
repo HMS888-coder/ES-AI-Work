@@ -180,7 +180,7 @@ export function McqPreview({ mcqId }: McqPreviewProps) {
 				{feedback ? <p role="status">{feedback}</p> : null}
 				<div className="flex gap-2">
 					<Button type="submit" disabled={isSubmitting || hasSubmitted}>
-						Submit answer
+						Submit
 					</Button>
 					<Button
 						type="button"
