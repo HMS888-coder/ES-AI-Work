@@ -21,7 +21,7 @@ Date last modified: Aug 31, 2026 (Phase 2 MCQ service implementation record)
 |-------|--------|---------|
 | 0 | `6f55b34` | Add Phase 0 MCQ CRUD technical PRD with Phase 1 implementation record. |
 | 1 | `46e18af` | Add Phase 1 MCQ D1 migration and schema tests. |
-| 2 | `edbb86c` | Add Phase 2 MCQ service with TDD unit tests. |
+| 2 | `36c3f5a` | Add Phase 2 MCQ service with TDD unit tests. |
 
 ---
 
@@ -391,7 +391,7 @@ Each phase follows **Red → Green → Refactor**:
   - User lookup via `getUserById` from `user-service.ts` on create and recordAttempt
   - `updateMcq`: replaces choices (DELETE + INSERT); bumps `updated_at`
 - **Tests**: `src/lib/services/mcq-service.test.ts` — **20 tests**; mocks D1 in-memory state + `vi.mock` on `user-service`
-- **Git commit**: `edbb86c`
+- **Git commit**: `36c3f5a`
 
 **Phase exit criteria**:
 
@@ -586,4 +586,4 @@ When working with this PRD:
 
 **Next Steps**: TDD `mcq-schemas.ts`, `mcq-handlers.ts`, and route wrappers
 
-**Branch**: `feature/mcq-crud` @ `edbb86c`
+**Branch**: `feature/mcq-crud` @ `36c3f5a`
