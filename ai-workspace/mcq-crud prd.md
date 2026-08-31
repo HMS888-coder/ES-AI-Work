@@ -14,7 +14,7 @@ Date last modified: Aug 31, 2026 (Phase 4 post-sanity-test UI enhancements)
 | Phase 3 (API routes) | **COMPLETED and verified** |
 | Phase 4 (UI pages and components) | **COMPLETED and verified** |
 | Phase 5 (Verification) | **PLANNED** |
-| Branch | `feature/mcq-crud` @ `dc59be9` |
+| Branch | `feature/mcq-crud` @ `7264655` |
 | Production URL | https://es-ai-work.harish-ms.workers.dev |
 | Test suite | 15 files, **95 tests** — all passing (Aug 31, 2026) |
 
@@ -27,6 +27,7 @@ Date last modified: Aug 31, 2026 (Phase 4 post-sanity-test UI enhancements)
 | 2 | `36c3f5a` | Add Phase 2 MCQ service with TDD unit tests. |
 | 3 | `4328364` | Add Phase 3 MCQ API handlers, Zod schemas, and route wrappers. |
 | 4 | `363ef51` | Add Phase 4 MCQ UI pages, components, and component tests. |
+| 4 (enhancements) | `7264655` | Add Phase 4 post-sanity-test MCQ UI enhancements. |
 
 ---
 
@@ -500,7 +501,7 @@ Each phase follows **Red → Green → Refactor**:
 | 3 | Duplicate choice text/id validation on create and edit with inline row errors | `src/components/mcq-form.tsx` |
 
 - **Tests added**: `mcq-preview.test.tsx` (correct + incorrect color cases), `mcq-form.test.tsx` (duplicate text) — **95/95** suite passing
-- **Git commit**: *(pending — local only)*
+- **Git commit**: `7264655`
 
 ---
 
@@ -654,12 +655,8 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: Phase 4 post-sanity-test enhancements implemented locally; Phase 5 still PLANNED for final sign-off
+**Status**: Phase 4 enhancements committed; production deploy in progress
 
-**Production URL**: https://es-ai-work.harish-ms.workers.dev
+**Next Steps**: Deploy to Cloudflare; Phase 5 final sign-off
 
-**Remote D1**: migration `0002_create_mcqs.sql` applied to `quizmaker-db`
-
-**Next Steps**: Verify enhancements locally; commit and redeploy when directed; Phase 5 final acceptance
-
-**Branch**: `feature/mcq-crud` @ `a9b1dd3`
+**Branch**: `feature/mcq-crud` @ `7264655`
