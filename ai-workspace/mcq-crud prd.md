@@ -1,6 +1,6 @@
 Date created: Aug 31, 2026
 
-Date last modified: Aug 31, 2026 (Phase 4 batches 3–4 — verified and deploying)
+Date last modified: Aug 31, 2026 (Phase 4 batches 3–4 deployed)
 
 # MCQ CRUD - Technical PRD
 
@@ -690,10 +690,10 @@ When working with this PRD:
 
 **Current Phase**: Phase 5 — Verification
 
-**Status**: Phase 4 batches 3–4 verified locally — **committing and deploying**
+**Status**: Phase 4 batches 3–4 **deployed to production**
 
-**Production URL**: https://es-ai-work.harish-ms.workers.dev
+**Production URL**: https://es-ai-work.harish-ms.workers.dev (deploy @ `a6defd6`)
 
-**Next Steps**: Phase 5 final sign-off after deploy
+**Next Steps**: Phase 5 final sign-off
 
-**Branch**: `feature/mcq-crud` @ `8afd837`
+**Branch**: `feature/mcq-crud` @ `a6defd6`
